@@ -183,18 +183,108 @@ export const Header: React.FC<HeaderProps> = ({
       )}
 
       {/* Main Bar */}
-      <div className={`px-4 ${isMobileFrame ? 'py-2.5' : 'py-3.5 max-w-7xl mx-auto'} flex items-center justify-between`}>
-        {/* Left Side: Search or Mobile Navigation */}
-        <div className="flex items-center space-x-3">
+      <div className={`px-4 sm:px-6 ${isMobileFrame ? 'py-2.5' : 'py-3 max-w-7xl mx-auto'} flex items-center justify-between gap-3 lg:gap-6`}>
+        {/* Left: Brand Logo (Anchored, never squished) */}
+        <div
+          onClick={() => onSelectTab('home')}
+          className="cursor-pointer select-none group py-1 flex items-center flex-shrink-0"
+          title="Alps Skincare • Pure Essence"
+        >
+          <AlpsLogo />
+        </div>
+
+        {/* Center: Desktop Navigation Links */}
+        {!isMobileFrame && (
+          <nav className="hidden lg:flex items-center justify-center flex-1 space-x-3.5 xl:space-x-6 text-[11px] xl:text-xs font-medium tracking-wider text-[#46464a] whitespace-nowrap px-2">
+            <button
+              onClick={() => onSelectTab('home')}
+              className={`transition-colors hover:text-[#1c1c19] py-1 whitespace-nowrap cursor-pointer ${
+                activeTab === 'home'
+                  ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]'
+                  : ''
+              }`}
+            >
+              {t.nav.home}
+            </button>
+            <button
+              onClick={() => onSelectTab('catalog')}
+              className={`transition-colors hover:text-[#1c1c19] py-1 whitespace-nowrap cursor-pointer ${
+                activeTab === 'catalog'
+                  ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]'
+                  : ''
+              }`}
+            >
+              {t.nav.catalog}
+            </button>
+            <button
+              onClick={() => onSelectTab('routine')}
+              className={`transition-colors hover:text-[#1c1c19] py-1 whitespace-nowrap cursor-pointer ${
+                activeTab === 'routine'
+                  ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]'
+                  : ''
+              }`}
+            >
+              {t.nav.routine}
+            </button>
+            <button
+              onClick={() => {
+                if (onOpenBrandStory) {
+                  onOpenBrandStory();
+                } else {
+                  const el = document.getElementById('brand-story');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+              className="transition-colors hover:text-[#1c1c19] font-medium py-1 whitespace-nowrap cursor-pointer"
+            >
+              {t.nav.story}
+            </button>
+            <button
+              onClick={() => {
+                const el = document.getElementById('minimalist-packaging');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="transition-colors hover:text-[#1c1c19] py-1 whitespace-nowrap cursor-pointer"
+            >
+              {t.nav.packaging}
+            </button>
+            <button
+              onClick={() => {
+                if (onOpenAccount) onOpenAccount();
+                else onSelectTab('account');
+              }}
+              className={`transition-colors hover:text-[#1c1c19] py-1 whitespace-nowrap cursor-pointer ${
+                activeTab === 'account'
+                  ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]'
+                  : ''
+              }`}
+            >
+              {t.nav.orders}
+            </button>
+            {onOpenSkinQuiz && (
+              <button
+                onClick={onOpenSkinQuiz}
+                className="transition-all hover:scale-105 active:scale-95 px-3 py-1 rounded-full bg-[#f4ece3] hover:bg-[#ebdccf] text-[#74584d] font-semibold flex items-center space-x-1.5 border border-[#fed8c9]/80 shadow-2xs cursor-pointer whitespace-nowrap"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#74584d] shrink-0" />
+                <span>{t.nav.quiz}</span>
+              </button>
+            )}
+          </nav>
+        )}
+
+        {/* Right Side Controls */}
+        <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          {/* Search Toggle / Input */}
           {showSearchInput ? (
             <div className="relative flex items-center">
-              <Search className="w-4 h-4 text-[#77767b] absolute left-2.5" />
+              <Search className="w-3.5 h-3.5 text-[#77767b] absolute left-2.5" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="pl-8 pr-7 py-1 text-xs md:text-sm bg-[#f0ede9] rounded-full focus:outline-none focus:ring-1 focus:ring-[#74584d] w-44 md:w-60 transition-all text-[#1c1c19]"
+                className="pl-8 pr-7 py-1 text-xs bg-[#f0ede9] rounded-full focus:outline-none focus:ring-1 focus:ring-[#74584d] w-36 sm:w-48 transition-all text-[#1c1c19]"
                 autoFocus
               />
               <button
@@ -215,123 +305,39 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors"
               title={headerI18n.searchTitle}
             >
-              <Search className="w-5 h-5 stroke-[1.5]" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
             </button>
           )}
 
-          {/* Desktop Navigation Links */}
-          {!isMobileFrame && (
-            <nav className="hidden lg:flex items-center space-x-6 pl-4 text-xs font-medium tracking-wider text-[#46464a]">
-              <button
-                onClick={() => onSelectTab('home')}
-                className={`transition-colors hover:text-[#1c1c19] ${activeTab === 'home' ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]' : ''}`}
-              >
-                {t.nav.home}
-              </button>
-              <button
-                onClick={() => onSelectTab('catalog')}
-                className={`transition-colors hover:text-[#1c1c19] ${activeTab === 'catalog' ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]' : ''}`}
-              >
-                {t.nav.catalog}
-              </button>
-              <button
-                onClick={() => onSelectTab('routine')}
-                className={`transition-colors hover:text-[#1c1c19] ${activeTab === 'routine' ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]' : ''}`}
-              >
-                {t.nav.routine}
-              </button>
-              <button
-                onClick={() => {
-                  if (onOpenBrandStory) {
-                    onOpenBrandStory();
-                  } else {
-                    const el = document.getElementById('brand-story');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className="transition-colors hover:text-[#1c1c19] font-medium"
-              >
-                {t.nav.story}
-              </button>
-              <button
-                onClick={() => {
-                  const el = document.getElementById('minimalist-packaging');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="transition-colors hover:text-[#1c1c19]"
-              >
-                {t.nav.packaging}
-              </button>
-              <button
-                onClick={() => {
-                  if (onOpenAccount) onOpenAccount();
-                  else onSelectTab('account');
-                }}
-                className={`transition-colors hover:text-[#1c1c19] ${activeTab === 'account' ? 'text-[#1c1c19] font-semibold underline underline-offset-4 decoration-[#74584d]' : ''}`}
-              >
-                {t.nav.orders}
-              </button>
-              {onOpenSkinQuiz && (
-                <button
-                  onClick={onOpenSkinQuiz}
-                  className="transition-all hover:scale-105 active:scale-95 px-3 py-1 rounded-full bg-[#f4ece3] hover:bg-[#ebdccf] text-[#74584d] font-semibold flex items-center space-x-1.5 border border-[#fed8c9]/80 shadow-2xs cursor-pointer"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-[#74584d]" />
-                  <span>{t.nav.quiz}</span>
-                </button>
-              )}
-              {onOpenSupport && (
-                <button
-                  id="nav-support-btn"
-                  onClick={onOpenSupport}
-                  className="transition-colors text-[#74584d] hover:text-[#1c1c19] font-semibold flex items-center space-x-1 cursor-pointer"
-                >
-                  <Headphones className="w-3.5 h-3.5" />
-                  <span>{t.nav.support}</span>
-                </button>
-              )}
-            </nav>
-          )}
-        </div>
-
-        {/* Center: Brand Logo */}
-        <div
-          onClick={() => onSelectTab('home')}
-          className="cursor-pointer text-center select-none group py-1 flex items-center justify-center"
-        >
-          <AlpsLogo />
-        </div>
-
-        {/* Right Side Controls */}
-        <div className="flex items-center space-x-2 md:space-x-3">
           {/* Multi-language Selector (EN, VI, DE, ES, ZH) */}
           <LanguageSelector variant="header" />
-          {/* View Mode Toggle (on standard desktop screen) */}
+
+          {/* View Mode Toggle (on extra wide screens) */}
           {!isMobileFrame && (
-            <div className="hidden sm:flex items-center bg-[#f0ede9] rounded-full p-0.5 border border-[#ebe8e3] text-xs">
+            <div className="hidden xl:flex items-center bg-[#f0ede9] rounded-full p-0.5 border border-[#ebe8e3] text-xs">
               <button
                 onClick={() => onViewModeChange('desktop')}
-                className={`px-2.5 py-1 rounded-full flex items-center space-x-1 transition-all ${
+                className={`px-2 py-0.5 rounded-full flex items-center space-x-1 transition-all ${
                   viewMode === 'desktop'
                     ? 'bg-[#202022] text-[#ffffff] shadow-xs'
                     : 'text-[#46464a] hover:text-[#1c1c19]'
                 }`}
                 title={headerI18n.desktopTitle}
               >
-                <Monitor className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-medium hidden md:inline">{headerI18n.desktopView}</span>
+                <Monitor className="w-3 h-3" />
+                <span className="text-[10px] font-medium hidden 2xl:inline">{headerI18n.desktopView}</span>
               </button>
               <button
                 onClick={() => onViewModeChange('mobile')}
-                className={`px-2.5 py-1 rounded-full flex items-center space-x-1 transition-all ${
+                className={`px-2 py-0.5 rounded-full flex items-center space-x-1 transition-all ${
                   viewMode === 'mobile'
                     ? 'bg-[#202022] text-[#ffffff] shadow-xs'
                     : 'text-[#46464a] hover:text-[#1c1c19]'
                 }`}
                 title={headerI18n.mobileTitle}
               >
-                <Smartphone className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-medium hidden md:inline">{headerI18n.mobileView}</span>
+                <Smartphone className="w-3 h-3" />
+                <span className="text-[10px] font-medium hidden 2xl:inline">{headerI18n.mobileView}</span>
               </button>
             </div>
           )}
@@ -341,11 +347,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="header-font-btn"
               onClick={onOpenFontSwitcher}
-              className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors flex items-center space-x-1"
+              className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors hidden sm:flex items-center space-x-1"
               title={headerI18n.fontTitle}
             >
               <Type className="w-4 h-4 text-[#74584d]" />
-              <span className="text-[11px] font-medium hidden lg:inline text-[#74584d]">Font</span>
             </button>
           )}
 
@@ -357,21 +362,21 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors relative"
               title={headerI18n.supportTitle}
             >
-              <Headphones className="w-5 h-5 stroke-[1.5]" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#8a9a86] rounded-full ring-2 ring-[#fcf9f4]" />
+              <Headphones className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-[#8a9a86] rounded-full ring-2 ring-[#fcf9f4]" />
             </button>
           )}
 
           {/* Notifications button with indicator dot */}
-          <div className="relative">
+          <div className="relative hidden sm:block">
             <button
               id="header-bell-btn"
               onClick={() => setShowNotification(!showNotification)}
               className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors relative"
               title={headerI18n.bellTitle}
             >
-              <Bell className="w-5 h-5 stroke-[1.5]" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#ba1a1a] rounded-full ring-2 ring-[#fcf9f4]" />
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-[#ba1a1a] rounded-full ring-2 ring-[#fcf9f4]" />
             </button>
 
             {showNotification && (
@@ -416,7 +421,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {user.avatarInitials}
                 </div>
               ) : (
-                <User className="w-5 h-5 stroke-[1.5]" />
+                <User className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
               )}
             </button>
           )}
@@ -429,9 +434,9 @@ export const Header: React.FC<HeaderProps> = ({
               className="p-1.5 text-[#1c1c19] hover:bg-[#f0ede9] rounded-full transition-colors relative"
               title={headerI18n.cartTitle}
             >
-              <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.5]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-[#1c1c19] text-white text-[10px] font-semibold rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-[#1c1c19] text-white text-[10px] font-semibold rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
